@@ -1,7 +1,5 @@
 package su25_se183660.car_rental_service.controllers;
 
-// RentingController.java
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import su25_se183660.car_rental_service.dtos.RentingTransactionDTO;
 import su25_se183660.car_rental_service.services.IRentingService;
 import su25_se183660.car_rental_service.utils.ResponseHandler;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/rentings")
@@ -33,9 +29,7 @@ public class RentingController {
 
     @GetMapping("/get-transaction/{id}")
     public ResponseEntity<RentingTransactionDTO> getTransactionById(@PathVariable Integer id) {
-        return rentingService.getTransactionById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return rentingService.getTransactionById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 }
 

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import su25_se183660.userservice.enums.Role;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,8 +37,7 @@ public class User {
     private String email;
 
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^(\\+84|0)(3[2-9]|5[689]|7[06-9]|8[1-9]|9[0-9])[0-9]{7}$",
-            message = "Phone number must be a valid Vietnamese number")
+    @Pattern(regexp = "^(\\+84|0)(3[2-9]|5[689]|7[06-9]|8[1-9]|9[0-9])[0-9]{7}$", message = "Phone number must be a valid Vietnamese number")
     @Column(name = "Telephone")
     private String phone;
 
@@ -48,4 +48,8 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "CustomerBirthday")
     private LocalDate customerBirthday;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Role")
+    private Role role;
 }

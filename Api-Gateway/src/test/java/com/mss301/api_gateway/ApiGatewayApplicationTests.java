@@ -1,10 +1,10 @@
-package com.mss301.api_gatewate;
+package com.mss301.api_gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiGatewateApplicationTests {
+class ApiGatewayApplicationTests {
 
 	@Test
 	void contextLoads() {

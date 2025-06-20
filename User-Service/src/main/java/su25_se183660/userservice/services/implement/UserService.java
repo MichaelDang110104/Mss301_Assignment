@@ -1,8 +1,10 @@
 package su25_se183660.userservice.services.implement;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import su25_se183660.userservice.dtos.UserDTO;
@@ -14,9 +16,20 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class UserService implements IUserService {
+public class UserService implements IUserService, UserDetailsService {
 
     private final IUserRepository iUserRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = iUserRepository.getUserByEmail(email);
+        if (user != null) {
+            var springUser = org.springframework.security.core.userdetails
+                    .User.withUsername(user.getEmail()).password(user.getPassword()).roles(user.getRole().name()).build();
+            return springUser;
+        }
+        return null;
+    }
 
     @Override
     public void createUser(UserDTO user) {
@@ -31,7 +44,7 @@ public class UserService implements IUserService {
     @Override
     public void updateUser(UserDTO userDTO, int userID) {
         User user = iUserRepository.getReferenceById(userID);
-        user = this.mapUserDTOToUser(userDTO,user);
+        user = this.mapUserDTOToUser(userDTO, user);
         user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
         iUserRepository.save(user);
     }
@@ -61,15 +74,7 @@ public class UserService implements IUserService {
     }
 
     public UserDTO mapUserDTOToUser(User user) {
-        return new UserDTO()
-                .builder()
-                .customerName(user.getCustomerName())
-                .password(user.getPassword())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .customerStatus(user.isCustomerStatus())
-                .customerBirthday(user.getCustomerBirthday())
-                .build();
+        return new UserDTO().builder().customerName(user.getCustomerName()).password(user.getPassword()).email(user.getEmail()).phone(user.getPhone()).customerStatus(user.isCustomerStatus()).customerBirthday(user.getCustomerBirthday()).build();
     }
 
     public User mapUserDTOToUser(UserDTO userDTO, User user) {
@@ -79,6 +84,7 @@ public class UserService implements IUserService {
         user.setPhone(userDTO.getPhone());
         user.setCustomerStatus(userDTO.isCustomerStatus());
         user.setCustomerBirthday(userDTO.getCustomerBirthday());
+        user.setRole(userDTO.getRole());
         return user;
     }
 

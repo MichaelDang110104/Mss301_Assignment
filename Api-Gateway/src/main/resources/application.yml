@@ -13,23 +13,29 @@ spring:
             - id: user-service
               uri: lb://user-service
               predicates:
-                - Path=/user-service/**, /login/**, /oauth2/**, /v3/api-docs/**, /swagger-ui/**
+                - Path=/user-service/**, /login/**, /oauth2/**, /user-service/v3/api-docs/**, /user-service/swagger-ui/**
+              filters:
+                - RewritePath=/user-service/(?<segment>.*), /${segment}
             - id: car-service
               uri: lb://car-service
               predicates:
-                - Path=/car-service/**, /v3/api-docs/**, /swagger-ui/**
+                - Path=/car-service/**, /car-service/v3/api-docs/**, /car-service/swagger-ui/**
             - id: rental-service
               uri: lb://rental-service
               predicates:
-                - Path=/rental-service/**, /v3/api-docs/**, /swagger-ui/**
+                - Path=/rental-service/**, /rental-service/v3/api-docs/**, /rental-service/swagger-ui/**
           default-filters:
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+          globalcors:
+            corsConfigurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*"
+
 server:
   port: 8765
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-jwt:
-  secret-key: 0c01d01bf34158899ed1808c36e14cfb5e811f36f948b223a5e011ca9fbf6c64
-  issuer: MSS301_Backend

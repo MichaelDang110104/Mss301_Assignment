@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import su25_se183660.carservice.dtos.CarInformationDTO;
 import su25_se183660.carservice.dtos.CarInformationResponse;
@@ -30,12 +31,14 @@ public class CarInformationController {
         return ResponseHandler.responseBuilder("Get car", HttpStatus.OK, carInformationService.getCarById(id));
     }
 
-    @PostMapping("create-car")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/create-car")
     public ResponseEntity<Object> createCar(@Valid @RequestBody CarInformationDTO carDTO) {
         CarInformationDTO created = carInformationService.createCar(carDTO);
         return ResponseHandler.responseBuilder("Create car", HttpStatus.OK, created);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update-car/{id}")
     public ResponseEntity<Object> updateCar(
             @PathVariable int id,
@@ -45,10 +48,12 @@ public class CarInformationController {
         return ResponseHandler.responseBuilder("Update car", HttpStatus.OK, updated);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete-car/{id}")
     public ResponseEntity<Object> deleteCar(@PathVariable int id) {
         carInformationService.deleteCar(id);
         return ResponseHandler.responseBuilder("Delete car", HttpStatus.OK, null);
     }
+
 }
 

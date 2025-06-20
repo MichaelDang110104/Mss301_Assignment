@@ -1,6 +1,6 @@
 spring:
   application:
-    name: User-Service
+    name: user-service
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     url: jdbc:sqlserver://empoweru.com.vn:1433;databaseName=CAR_CUSTOMER;encrypt=true;trustServerCertificate=true;sendStringParametersAsUnicode=true;characterEncoding=UTF-8;
@@ -24,3 +24,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 server:
   port: 8010
+jwt:
+  secret-key: 0c01d01bf34158899ed1808c36e14cfb5e811f36f948b223a5e011ca9fbf6c64
+  issuer: MSS301_Backend

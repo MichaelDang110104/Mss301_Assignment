@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import su25_se183660.userservice.enums.Role;
 
 import java.time.LocalDate;
 
@@ -14,9 +15,16 @@ import java.time.LocalDate;
 @Builder
 public class UserDTO {
     private String customerName;
+
     private String password;
+
     private String email;
+
     private String phone;
+
     private boolean customerStatus;
+
     private LocalDate customerBirthday;
+
+    private Role role;
 }
