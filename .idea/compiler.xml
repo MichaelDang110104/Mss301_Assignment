@@ -11,29 +11,29 @@
         <module name="Service-Discovery" />
         <module name="api-gatewate" />
       </profile>
-      <profile name="Annotation profile for car_rental_service" enabled="true">
+      <profile name="Annotation profile for carservice" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-        </processorPath>
-        <module name="CarRentalService" />
-      </profile>
-      <profile name="Annotation profile for User-Service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
+        <processorPath>
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="CarService" />
+        <module name="CarRentalService" />
+      </profile>
+      <profile name="Annotation profile for common-security" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath>
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
+        <module name="common-security" />
         <module name="User-Service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="common-security" target="21" />
       <module name="gateway" target="21" />
     </bytecodeTargetLevel>
   </component>

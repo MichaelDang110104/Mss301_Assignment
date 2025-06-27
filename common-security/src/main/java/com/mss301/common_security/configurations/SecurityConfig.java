@@ -1,4 +1,4 @@
-package su25_se183660.carservice.configuration;
+package com.mss301.common_security.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

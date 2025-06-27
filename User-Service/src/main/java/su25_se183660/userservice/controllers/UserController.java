@@ -45,7 +45,7 @@ public class UserController {
         return ResponseHandler.responseBuilder("Update user successfully !", HttpStatus.OK, null);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/delete-user/{userD}")
     public ResponseEntity<Object> deleteUser(@PathVariable int userID) {
         iUserService.deleteUser(userID);
@@ -85,12 +85,6 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @Operation(description = "STAFF: alice.johnson@example.com  ||  USER: charlie.brown@example.com", requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "ROLE: MENTOR", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "Login Example", value = """
-            {
-              "email": "bob.smith@example.com",
-              "password": "123456"
-            }
-            """))))
     public ResponseEntity<Object> login(@RequestBody RequestAuthentication authentication) {
         try {
             User user = iUserService.getUserByEmail(authentication.getEmail());

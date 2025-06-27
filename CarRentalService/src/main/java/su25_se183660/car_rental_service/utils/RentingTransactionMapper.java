@@ -47,4 +47,17 @@ public class RentingTransactionMapper {
                         .build()
         ).collect(Collectors.toList());
     }
+
+    public static List<RentingDetailDTO> toRentingDetailDTOs(List<RentingDetail> rentingDetails) {
+        return rentingDetails.stream().map(
+                rd ->
+                        RentingDetailDTO
+                                .builder()
+                                .carId(rd.getCarId())
+                                .price(rd.getPrice())
+                                .startDate(rd.getStartDate())
+                                .endDate(rd.getEndDate())
+                                .build()
+        ).collect(Collectors.toList());
+    }
 }

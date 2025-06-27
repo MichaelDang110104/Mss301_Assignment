@@ -69,7 +69,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         String token = authHeader.substring(7);
 
         WebClient webClient = WebClient.builder()
-                .baseUrl("http://localhost:8010") // If using Eureka + Gateway discovery
+                .baseUrl("http://localhost:8010")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 

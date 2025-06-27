@@ -3,7 +3,7 @@ spring:
     name: user-service
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://empoweru.com.vn:1433;databaseName=CAR_CUSTOMER;encrypt=true;trustServerCertificate=true;sendStringParametersAsUnicode=true;characterEncoding=UTF-8;
+    url: jdbc:sqlserver://84.247.149.231:1433;databaseName=CAR_CUSTOMER;encrypt=true;trustServerCertificate=true;sendStringParametersAsUnicode=true;characterEncoding=UTF-8;
     username: sa
     password: Michaeldang110104@
   jpa:
@@ -12,7 +12,7 @@ spring:
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    #    show-sql: true
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
