@@ -1,11 +1,14 @@
 package su25_se183660.car_rental_service.utils;
 
+import su25_se183660.car_rental_service.dtos.CarInformationDTO;
 import su25_se183660.car_rental_service.dtos.RentingDetailDTO;
 import su25_se183660.car_rental_service.dtos.RentingTransactionDTO;
+import su25_se183660.car_rental_service.dtos.ResponseRentingDetailDTO;
 import su25_se183660.car_rental_service.pojos.RentingDetail;
 import su25_se183660.car_rental_service.pojos.RentingTransaction;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class RentingTransactionMapper {
@@ -48,12 +51,12 @@ public class RentingTransactionMapper {
         ).collect(Collectors.toList());
     }
 
-    public static List<RentingDetailDTO> toRentingDetailDTOs(List<RentingDetail> rentingDetails) {
+    public static List<ResponseRentingDetailDTO> toRentingDetailDTOs(List<RentingDetail> rentingDetails, Function<Integer, CarInformationDTO> carFetcher) {
         return rentingDetails.stream().map(
                 rd ->
-                        RentingDetailDTO
+                        ResponseRentingDetailDTO
                                 .builder()
-                                .carId(rd.getCarId())
+                                .car(carFetcher.apply(rd.getCarId()))
                                 .price(rd.getPrice())
                                 .startDate(rd.getStartDate())
                                 .endDate(rd.getEndDate())

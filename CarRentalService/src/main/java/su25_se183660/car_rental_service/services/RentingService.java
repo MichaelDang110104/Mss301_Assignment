@@ -10,10 +10,7 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import su25_se183660.car_rental_service.dtos.CarInformationDTO;
-import su25_se183660.car_rental_service.dtos.RentingDetailDTO;
-import su25_se183660.car_rental_service.dtos.RentingTransactionDTO;
-import su25_se183660.car_rental_service.dtos.UserDTO;
+import su25_se183660.car_rental_service.dtos.*;
 import su25_se183660.car_rental_service.pojos.RentingDetail;
 import su25_se183660.car_rental_service.pojos.RentingTransaction;
 import su25_se183660.car_rental_service.repositories.IRentingDetailRepo;
@@ -24,6 +21,7 @@ import su25_se183660.car_rental_service.utils.RentingTransactionMapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -91,11 +89,18 @@ public class RentingService implements IRentingService {
     }
 
     @Override
-    public List<RentingDetailDTO> getReportStatistics(String startDate, String endDate) {
+    public List<ResponseRentingDetailDTO> getReportStatistics(String startDate, String endDate) {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         List<RentingDetail> reportStatistics = rentingDetailRepo.findAllByStartDateGreaterThanEqualAndEndDateLessThanEqualOrderByPriceDesc(start, end);
-        return RentingTransactionMapper.toRentingDetailDTOs(reportStatistics);
+        Function<Integer, CarInformationDTO> carFetcher = carId -> {
+            String url = "http://car-service/api/cars/get-car/{id}";
+            ResponseEntity<ApiResponse<CarInformationDTO>> response =
+                    this.sendRestTemplate(url, new ParameterizedTypeReference<>() {}, carId);
+            return response.getBody() != null ? response.getBody().getData() : null;
+        };
+
+        return RentingTransactionMapper.toRentingDetailDTOs(reportStatistics,carFetcher);
     }
 
     public <T> ResponseEntity<ApiResponse<T>> sendRestTemplate(String url, ParameterizedTypeReference<ApiResponse<T>> typeRef, Object... params) {
