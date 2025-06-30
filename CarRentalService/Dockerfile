@@ -1,14 +1,17 @@
-# Stage 1: Build with common-security
+# Stage 1: Build all from root
 FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
 WORKDIR /build
 
-# Copy all source code (parent should include common-security)
+# Copy the entire project so that Maven can resolve common-security
 COPY ../.. .
 
-# Build this service with common-security module
-RUN mvn clean package -pl common-security,rental-service -am -DskipTests
-# Stage 2: Runtime
+# Build common-security and the CarService module
+RUN mvn clean package -pl common-security,CarRentalService -am -DskipTests
+
+# Stage 2: Runtime image
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
-COPY --from=builder /build/rental-service/target/*.jar app.jar
+
+# Copy the built jar of CarService
+COPY --from=builder /build/CarRentalService/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]

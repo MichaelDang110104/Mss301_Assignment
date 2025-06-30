@@ -1,73 +1,60 @@
+version: '3.8'
+
 services:
   eureka-server:
-    container_name: eureka-server
     build:
-      context: ./Service-Discovery
+      context: .
+      dockerfile: ./Service-Discovery/Dockerfile
     ports:
       - "8761:8761"
     networks:
       - spring-cloud
-    volumes:
-      - ~/.m2:/root/.m2
-    restart: always
 
   user-service:
-    container_name: user-service
     build:
-      context: ./User-Service
-      dockerfile: Dockerfile.multi
+      context: .
+      dockerfile: ./User-Service/Dockerfile
     depends_on:
       - eureka-server
     ports:
-      - "8010:8010"
+      - "8081:8081"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
-    volumes:
-      - ~/.m2:/root/.m2
-    restart: always
 
   car-service:
-    container_name: car-service
     build:
-      context: ./CarService
-      dockerfile: Dockerfile.multi
+      context: .
+      dockerfile: ./CarService/Dockerfile
     depends_on:
       - eureka-server
     ports:
-      - "8020:8020"
+      - "8082:8082"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
-    volumes:
-      - ~/.m2:/root/.m2
-    restart: always
 
   rental-service:
-    container_name: rental-service
     build:
-      context: ./CarRentalService
-      dockerfile: Dockerfile.multi
+      context: .
+      dockerfile: ./CarRentalService/Dockerfile
     depends_on:
       - eureka-server
       - user-service
       - car-service
     ports:
-      - "8030:8030"
+      - "8083:8083"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
-    volumes:
-      - ~/.m2:/root/.m2
-    restart: always
 
   api-gateway:
-    container_name: api-gateway
     build:
-      context: ./Api-Gateway
+      context: .
+      dockerfile: ./Api-Gateway/Dockerfile
     depends_on:
       - eureka-server
     ports:
@@ -76,10 +63,6 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
-    volumes:
-      - ~/.m2:/root/.m2
-    restart: always
 
 networks:
   spring-cloud:
-    driver: bridge
