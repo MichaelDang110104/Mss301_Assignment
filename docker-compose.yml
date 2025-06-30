@@ -21,6 +21,8 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
+    volumes:
+      - ~/.m2:/root/.m2
     restart: always
 
   car-service:
@@ -35,6 +37,8 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
+    volumes:
+      - ~/.m2:/root/.m2
     restart: always
 
   rental-service:
@@ -51,6 +55,8 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
+    volumes:
+      - ~/.m2:/root/.m2
     restart: always
 
   api-gateway:
