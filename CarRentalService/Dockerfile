@@ -1,5 +1,11 @@
-FROM openjdk:21-jdk-slim
+# Stage 1: build
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Stage 2: run
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
