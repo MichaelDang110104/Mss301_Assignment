@@ -7,14 +7,15 @@ services:
       - "8761:8761"
     networks:
       - spring-cloud
-    restart: always
     volumes:
       - ~/.m2:/root/.m2
+    restart: always
 
   user-service:
     container_name: user-service
     build:
       context: ./User-Service
+      dockerfile: Dockerfile.multi
     depends_on:
       - eureka-server
     ports:
@@ -31,6 +32,7 @@ services:
     container_name: car-service
     build:
       context: ./CarService
+      dockerfile: Dockerfile.multi
     depends_on:
       - eureka-server
     ports:
@@ -47,6 +49,7 @@ services:
     container_name: rental-service
     build:
       context: ./CarRentalService
+      dockerfile: Dockerfile.multi
     depends_on:
       - eureka-server
       - user-service
