@@ -3,8 +3,8 @@ version: '3.8'
 services:
   eureka-server:
     build:
-      context: .
-      dockerfile: ./Service-Discovery/Dockerfile
+      context: ./Service-Discovery
+      dockerfile: Dockerfile
     ports:
       - "8761:8761"
     networks:
@@ -12,49 +12,55 @@ services:
 
   user-service:
     build:
-      context: .
-      dockerfile: ./User-Service/Dockerfile
+      context: ./User-Service
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
     ports:
-      - "8081:8081"
+      - "8010:8010"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
+    volumes:
+      - ~/.m2:/root/.m2
 
   car-service:
     build:
-      context: .
-      dockerfile: ./CarService/Dockerfile
+      context: ./CarService
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
     ports:
-      - "8082:8082"
+      - "8020:8020"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
+    volumes:
+      - ~/.m2:/root/.m2
 
   rental-service:
     build:
-      context: .
-      dockerfile: ./CarRentalService/Dockerfile
+      context: ./CarRentalService
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
       - user-service
       - car-service
     ports:
-      - "8083:8083"
+      - "8030:8030"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
+    volumes:
+      - ~/.m2:/root/.m2
 
   api-gateway:
     build:
-      context: .
-      dockerfile: ./Api-Gateway/Dockerfile
+      context: ./Api-Gateway
+      dockerfile: Dockerfile
     depends_on:
       - eureka-server
     ports:
@@ -63,6 +69,8 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
     networks:
       - spring-cloud
+    volumes:
+      - ~/.m2:/root/.m2
 
 networks:
   spring-cloud:

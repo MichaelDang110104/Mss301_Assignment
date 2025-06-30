@@ -1,17 +1,11 @@
-# Stage 1: Build all from root
+# Stage 1: build
 FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
-WORKDIR /build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the entire project so that Maven can resolve common-security
-COPY ../.. .
-
-# Build common-security and the CarService module
-RUN mvn clean package -pl common-security,CarService -am -DskipTests
-
-# Stage 2: Runtime image
+# Stage 2: run
 FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
-
-# Copy the built jar of CarService
-COPY --from=builder /build/CarService/target/*.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
