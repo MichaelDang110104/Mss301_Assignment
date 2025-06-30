@@ -1,0 +1,72 @@
+services:
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./Service-Discovery
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-cloud
+    restart: always
+
+  user-service:
+    container_name: user-service
+    build:
+      context: ./User-Service
+    depends_on:
+      - eureka-server
+    ports:
+      - "8010:8010"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - spring-cloud
+    restart: always
+
+  car-service:
+    container_name: car-service
+    build:
+      context: ./CarService
+    depends_on:
+      - eureka-server
+    ports:
+      - "8020:8020"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - spring-cloud
+    restart: always
+
+  rental-service:
+    container_name: rental-service
+    build:
+      context: ./CarRentalService
+    depends_on:
+      - eureka-server
+      - user-service
+      - car-service
+    ports:
+      - "8030:8030"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - spring-cloud
+    restart: always
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./Api-Gateway
+    depends_on:
+      - eureka-server
+    ports:
+      - "8765:8765"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    networks:
+      - spring-cloud
+    restart: always
+
+networks:
+  spring-cloud:
+    driver: bridge
