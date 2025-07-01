@@ -1,4 +1,5 @@
-package su25_se183660.carservice.configuration;
+package su25_se183660.userservice.configuration;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

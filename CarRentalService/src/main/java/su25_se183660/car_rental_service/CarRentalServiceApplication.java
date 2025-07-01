@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"su25_se183660.car_rental_service","com.mss301.common_security" })
+//@ComponentScan({"su25_se183660.car_rental_service","com.mss301.common_security" })
 //@OpenAPIDefinition(
 //		info = @Info(title = "Rental Service API", version = "1.0"),
 //		servers = {

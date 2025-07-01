@@ -14,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 //				@Server(url = "http://localhost:8765/car-service", description = "API Gateway")
 //		}
 //)
-@ComponentScan({"su25_se183660.carservice","com.mss301.common_security" })
+//@ComponentScan({"su25_se183660.carservice","com.mss301.common_security" })
 public class CarserviceApplication {
 
 	public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package su25_se183660.carservice.configuration;
+package su25_se183660.car_rental_service.configurations;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

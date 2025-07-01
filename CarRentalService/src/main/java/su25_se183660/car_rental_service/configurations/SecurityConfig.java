@@ -1,6 +1,5 @@
-package su25_se183660.carservice.configuration;
+package su25_se183660.car_rental_service.configurations;
 
-import com.mss301.common_security.configurations.HeaderAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final com.mss301.common_security.configurations.HeaderAuthenticationFilter headerAuthenticationFilter;
+    private final HeaderAuthenticationFilter headerAuthenticationFilter;
 
     public SecurityConfig(HeaderAuthenticationFilter filter) {
         this.headerAuthenticationFilter = filter;

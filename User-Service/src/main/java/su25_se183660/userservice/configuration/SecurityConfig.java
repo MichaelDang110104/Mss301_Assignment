@@ -1,4 +1,4 @@
-package su25_se183660.carservice.configuration;
+package su25_se183660.userservice.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
