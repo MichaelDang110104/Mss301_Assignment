@@ -21,6 +21,6 @@ eureka:
   client:
     service-url:
       #      defaultZone: http://localhost:8761/eureka
-      defaultZone: http://empower-u.sytes.net:8761/eureka
+      defaultZone: http://84.247.149.231:8761/eureka
 server:
   port: 8020

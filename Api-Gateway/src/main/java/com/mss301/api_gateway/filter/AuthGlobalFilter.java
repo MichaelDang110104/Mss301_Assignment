@@ -69,7 +69,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         String token = authHeader.substring(7);
 
         WebClient webClient = WebClient.builder()
-                .baseUrl("http://empower-u.sytes.net:8010")
+                .baseUrl("http://84.247.149.231:8010")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
