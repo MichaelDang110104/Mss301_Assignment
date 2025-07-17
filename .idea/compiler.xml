@@ -8,8 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="service_discovery" />
-        <module name="Service-Discovery" />
+        <module name="common-security" />
         <module name="api-gatewate" />
+        <module name="service-discovery" />
       </profile>
       <profile name="Annotation profile for carservice" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -31,26 +32,25 @@
         </processorPath>
         <module name="User-Service" />
       </profile>
-      <profile name="Annotation profile for common-security" enabled="true">
+      <profile name="Annotation profile for root" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
         </processorPath>
-        <module name="common-security" />
+        <module name="rental-service" />
+        <module name="car-service" />
       </profile>
-      <profile name="Annotation profile for car_rental_service" enabled="true">
+      <profile name="Annotation profile for user-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath>
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="rental-service" />
         <module name="user-service" />
-        <module name="car-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -61,13 +61,13 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="CarRentalService" options="-parameters" />
       <module name="CarService" options="-parameters" />
-      <module name="Service-Discovery" options="-parameters" />
       <module name="User-Service" options="-parameters" />
       <module name="api-gatewate" options="-parameters" />
       <module name="car-service" options="-parameters" />
       <module name="common-security" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="rental-service" options="-parameters" />
+      <module name="service-discovery" options="-parameters" />
       <module name="service_discovery" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>

@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: car-service
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://84.247.149.231:1433;databaseName=CAR_MANAGEMENT;encrypt=true;trustServerCertificate=true;sendStringParametersAsUnicode=true;characterEncoding=UTF-8;
+    username: sa
+    password: Michaeldang110104@
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServerDialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka
+#      defaultZone: http://84.247.149.231:8761/eureka
+server:
+  port: 8020

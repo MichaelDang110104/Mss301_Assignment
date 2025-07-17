@@ -1,0 +1,32 @@
+# ===== Stage 1: Build =====
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
+WORKDIR /build
+COPY .mvn .mvn
+COPY mvnw .
+COPY pom.xml .
+COPY common-security/pom.xml common-security/
+COPY user-service/pom.xml user-service/
+COPY service-discovery/pom.xml service-discovery/
+COPY api-gateway/pom.xml api-gateway/
+COPY car-service/pom.xml car-service/
+COPY rental-service/pom.xml rental-service/
+
+RUN chmod +x ./mvnw
+RUN sed -i 's/\r$//' ./mvnw
+
+RUN ./mvnw -B dependency:go-offline
+
+COPY common-security/src common-security/src
+COPY user-service/src user-service/src
+
+RUN ./mvnw -B clean package -pl user-service -am -DskipTests
+
+# ===== Stage 2: Runtime =====
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+
+COPY --from=builder /build/user-service/target/*.jar app.jar
+
+EXPOSE 8010
+
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-Xmx512m", "-Xss256k", "-jar", "app.jar"]

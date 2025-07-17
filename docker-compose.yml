@@ -1,76 +1,95 @@
 version: '3.8'
 
 services:
-  eureka-server:
+  service-discovery:
     build:
-      context: ./Service-Discovery
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.service-discovery
     ports:
       - "8761:8761"
+    healthcheck:
+      test: [ "CMD", "wget", "--spider", "--quiet", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     networks:
-      - spring-cloud
+      spring-cloud:
+        aliases:
+          - service-discovery
 
   user-service:
     build:
-      context: ./User-Service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.user-service
     depends_on:
-      - eureka-server
+      service-discovery:
+        condition: service_healthy
     ports:
       - "8010:8010"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:8761/eureka
     networks:
-      - spring-cloud
+      spring-cloud:
+        aliases:
+          - user-service
     volumes:
       - ~/.m2:/root/.m2
 
   car-service:
     build:
-      context: ./CarService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.car-service
     depends_on:
-      - eureka-server
+      service-discovery:
+        condition: service_healthy
     ports:
       - "8020:8020"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:8761/eureka
     networks:
-      - spring-cloud
+      spring-cloud:
+        aliases:
+          - car-service
     volumes:
       - ~/.m2:/root/.m2
 
   rental-service:
     build:
-      context: ./CarRentalService
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.rental-service
     depends_on:
-      - eureka-server
-      - user-service
-      - car-service
+      service-discovery:
+        condition: service_healthy
     ports:
       - "8030:8030"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:8761/eureka
     networks:
-      - spring-cloud
+      spring-cloud:
+        aliases:
+          - rental-service
     volumes:
       - ~/.m2:/root/.m2
 
   api-gateway:
     build:
-      context: ./Api-Gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.api-gateway
     depends_on:
-      - eureka-server
+      service-discovery:
+        condition: service_healthy
     ports:
       - "8765:8765"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:8761/eureka
     networks:
-      - spring-cloud
+      spring-cloud:
+        aliases:
+          - api-gateway
     volumes:
       - ~/.m2:/root/.m2
 
 networks:
   spring-cloud:
+    driver: bridge

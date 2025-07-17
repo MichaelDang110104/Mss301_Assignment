@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: MSS301-Api-Gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/user-service/**, /login/**, /oauth2/**, /user-service/v3/api-docs/**, /user-service/swagger-ui/**
+              filters:
+                - RewritePath=/user-service/(?<segment>.*), /${segment}
+            - id: car-service
+              uri: lb://car-service
+              predicates:
+                - Path=/car-service/**, /car-service/v3/api-docs/**, /car-service/swagger-ui/**
+            - id: rental-service
+              uri: lb://rental-service
+              predicates:
+                - Path=/rental-service/**, /rental-service/v3/api-docs/**, /rental-service/swagger-ui/**
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+          globalcors:
+            corsConfigurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*"
+
+server:
+  port: 8765
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-discovery:8761/eureka
+#      defaultZone: http://84.247.149.231:8761/eureka
